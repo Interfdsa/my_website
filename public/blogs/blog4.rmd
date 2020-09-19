@@ -1,0 +1,89 @@
+---
+title: "Trumps Approval List"
+date: '2020-09-15'
+description: How has Trumps Approval changed over the years?
+draft: no
+image: pic02.jpg
+keywords: ''
+slug: blog1
+categories:
+- ''
+- ''
+---
+
+```{r, setup, include=FALSE}
+knitr::opts_chunk$set(
+  message = FALSE, 
+  warning = FALSE, 
+  tidy=FALSE,     # display code as typed
+  size="small")   # slightly smaller font for code
+options(digits = 3)
+
+# default figure size
+knitr::opts_chunk$set(
+  fig.width=6.75, 
+  fig.height=6.75,
+  fig.align = "center"
+)
+```
+
+
+```{r load-libraries, include=FALSE}
+library(tidyverse)  # Load ggplot2, dplyr, and all the other tidyverse packages
+library(mosaic)
+library(ggthemes)
+library(lubridate)
+library(here)
+library(skimr)
+library(janitor)
+library(httr)
+library(readxl)
+library(vroom)
+library(infer)
+```
+
+
+```{r, cache=TRUE}
+# Import approval polls data
+approval_polllist <- read_csv(here::here('data', 'approval_polllist.csv'))
+
+glimpse(approval_polllist)
+# Use `lubridate` to fix dates, as they are given as characters.
+```
+
+## Create a plot
+
+I calculated the average net approval rate (approve- disapprove) for each week since he got into office. I plotted the net approval, along with its 95% confidence interval. As part of the assignment for the MAM.
+```{r fig.height=4.5, fig.width=12}
+temp1<-approval_polllist%>%
+  filter(enddate!="12/31/2017")%>%
+  mutate(enddate=mdy(enddate), #mdy because month/day/year in lubridate
+         week_ty=isoweek(enddate),
+         year=year(enddate))%>%
+  filter(subgroup=="Voters")%>%
+  group_by(year,week_ty)%>%
+  mutate(netappper=approve-disapprove)%>%
+  summarise(week_ty=isoweek(enddate),
+            year=as.character(year(enddate)),
+            netapp=mean(netappper),
+            sdnetapp=sd(netappper))%>%
+  mutate(standard_error=sdnetapp/sqrt(n()),
+         tcrit=qt(0.975,n()-1)) %>% 
+  mutate(lower_95=netapp-tcrit*standard_error, 
+         upper_95=netapp+tcrit*standard_error) %>% 
+  unique()#note after previous operations, there will be numerous identical rows: the commands make them identical, but mutate/summarise do not delete them, that's why we need unique()
+  
+  
+ggplot(temp1,aes(x=week_ty,y=netapp,color=year))+
+  geom_line(show.legend = FALSE)+geom_point(show.legend=FALSE)+
+  geom_ribbon(aes(x=week_ty,ymin=lower_95,ymax=upper_95,fill=year),alpha=0.1,show.legend=FALSE)+
+  geom_hline(yintercept=0,color="orange")+
+  facet_wrap(~year)+
+  theme_bw()+
+  scale_x_continuous(breaks=seq(0,52,by=13))+
+  scale_y_continuous(breaks=seq(-20.0,7.5,by=2.5))+
+  labs(title="Estimating Net Approval (approve-disapprove) for Donald Trump",
+       subtitle="Weekly average of all polls",
+       x="Week of the year",
+       y="Average Net Approval (%)")
+```

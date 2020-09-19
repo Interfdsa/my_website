@@ -1,0 +1,179 @@
+<!DOCTYPE HTML>
+<html>
+
+    <head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<meta name="description" content="Samy&#39;s Website">
+	<meta name="author" content="Samy Mohamad">
+	<meta name="generator" content="Hugo 0.74.3" />
+	<title>COVID-19 data analysis &middot; Samy Mohamad</title>
+	<!-- Stylesheets -->
+	
+	<link rel="stylesheet" href="/css/main.css"/>
+	
+	
+
+	
+
+	<!-- Custom Fonts -->
+	<link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+	
+	<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+	<link rel="icon" type="image/x-icon" href="/favicon.ico">
+	
+
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	<script src="js/ie/html5shiv.js"></script>
+	<script src="js/ie/html5shiv.jsrespond.min.js"></script>
+	<![endif]-->
+</head>
+
+    <body>
+
+    <!-- Wrapper -->
+        <div id="wrapper">
+
+            <!-- Header -->
+    <header id="header" class="alt">
+        <a href="/" class="logo"><strong>Samy Mohamad</strong> <span>MAM</span></a>
+        <nav>
+            <a href="#menu">Menu</a>
+        </nav>
+    </header>
+
+<!-- Menu -->
+    <nav id="menu">
+        <ul class="links">
+            
+                <li><a href="/">Home</a></li>
+            
+                <li><a href="/blogs">Blogs</a></li>
+            
+                <li><a href="/blogs/ipsum">LBS</a></li>
+            
+                <li><a href="/elements.html">Applied Stats</a></li>
+            
+
+        </ul>
+        <ul class="actions vertical">
+            
+                <li><a href="/blogs" class="button special fit">Check Out Some of My Cool Code and Graphs</a></li>
+            
+            
+                <li><a href="/" class="button fit">Log In</a></li>
+            
+        </ul>
+    </nav>
+
+        <!-- Main -->
+            <div id="main" class="alt">
+
+                
+                    <section id="one">
+                        <div class="inner">
+                            <header class="major">
+                                <h1>COVID-19 data analysis</h1>
+                            </header>
+                            
+                                <span class="image main"><img src="/img/blogs/pic04.jpg" alt="" /></span>
+                            
+                            
+
+
+<p>Let us revisit the <a href="https://data.cdc.gov/Case-Surveillance/COVID-19-Case-Surveillance-Public-Use-Data/vbim-akqf">CDC Covid-19 Case Surveillance Data</a>. There are well over 3 million entries of individual, de-identified patient data. Since this is a large file, I suggest you use <code>vroom</code> to load it and you keep <code>cache=TRUE</code> in the chunk options.</p>
+<pre class="r"><code># URL link to CDC to download data
+url &lt;- &quot;https://data.cdc.gov/api/views/vbim-akqf/rows.csv?accessType=DOWNLOAD&quot;
+
+covid_data &lt;- vroom(url)%&gt;%
+  clean_names()</code></pre>
+<p>Given the data we have, I would like you to produce two graphs that show death % rate:
+(Do we need to perform data cleansing on missing values? to be discussed)
+(Double faceting for both, use facet_grid, check R docu)
+1. by age group, sex, and whether the patient had co-morbidities or not
+sex, age_group, medcond_yn, death_yn!</p>
+<pre class="r"><code>covid_data_deathrate1 &lt;- covid_data %&gt;% 
+  filter(!(death_yn %in%c(&quot;Missing&quot;,&quot;Unknown&quot;)),
+         !(medcond_yn %in%c(&quot;Missing&quot;,&quot;Unknown&quot;)),
+         !(is.na(age_group)), 
+         !(age_group %in%c(&quot;Missing&quot;,&quot;Unknown&quot;)),
+         !(is.na(sex)), 
+         !(sex %in%c(&quot;Missing&quot;,&quot;Unknown&quot;))) %&gt;% 
+  
+ group_by (age_group, sex, medcond_yn, death_yn) %&gt;%
+  count(death_yn)  %&gt;%
+  group_by (age_group, sex, medcond_yn) %&gt;%
+  mutate(death_rate = n*100/sum(n)) %&gt;% 
+  filter(death_yn==&quot;Yes&quot;) %&gt;% mutate(comorb = ifelse(medcond_yn==&quot;No&quot;,&quot;Without Comorbidities&quot;,&quot;With Comorbidities&quot;), death_rate = round(death_rate,1))
+
+covid_data_deathrate1 %&gt;%  
+  ggplot(aes(x= age_group, y = death_rate, fill=sex))+
+  geom_col()+
+  coord_flip()+
+  facet_grid(col=vars(sex),row=vars(comorb))+
+  theme(axis.text.x = element_text(angle = 30)) +
+  geom_text(aes(label=death_rate), position=position_dodge(width=0),hjust = -0.25)+ theme_bw()+
+    labs(title=&quot;Covid death % by age group, sex and presence of co-morbidities&quot;,
+       x=&quot;&quot;,y=&quot;&quot;, caption=&quot;Source:CDC&quot;)+
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="/blogs/blog3_files/figure-html/unnamed-chunk-2-1.png" width="1920" style="display: block; margin: auto;" />
+1. by age group, sex, and whether the patient was admitted to Intensive Care Unit (ICU) or not.
+sex, age_group, icu_yn, death_yn!</p>
+<p><img src="/blogs/blog3_files/figure-html/covid_challenge_2-1.png" width="1920" style="display: block; margin: auto;" /></p>
+
+                        </div>
+                    </section>
+            <!-- Disqus Inject -->
+                
+            </div>
+            
+        <!-- Footer -->
+            
+                <!-- Footer -->
+    <footer id="footer">
+        <div class="inner">
+            <ul class="icons">
+                
+                    <li><a href="https://www.facebook.com/interfdsa" class="icon alt fa-facebook" target="_blank"><span class="label">Facebook</span></a></li>
+                
+                    <li><a href="https://www.instagram.com/interfdsa" class="icon alt fa-instagram" target="_blank"><span class="label">Instagram</span></a></li>
+                
+                    <li><a href="https://www.github.com/interfdsa" class="icon alt fa-github" target="_blank"><span class="label">GitHub</span></a></li>
+                
+                    <li><a href="https://www.linkedin.com/in/samy-mohamad-985a263b/" class="icon alt fa-linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
+                
+            </ul>
+            <ul class="copyright">
+                <li>&copy; Company Name</li>
+                
+            </ul>
+        </div>
+    </footer>
+
+            
+        </div>
+
+    <!-- Scripts -->
+        <!-- Scripts -->
+    <!-- jQuery -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery.scrolly.min.js"></script>
+    <script src="/js/jquery.scrollex.min.js"></script>
+    <script src="/js/skel.min.js"></script>
+    <script src="/js/util.js"></script>
+
+    
+
+    <!-- Main JS -->
+    <script src="/js/main.js"></script>
+
+    
+
+    
+
+    </body>
+</html>

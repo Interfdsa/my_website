@@ -1,0 +1,120 @@
+---
+title: "TFL Bikes"
+date: '2020-09-15'
+description: Is Gender Discrimination Present in Omega?
+draft: no
+image: pic02.jpg
+keywords: ''
+slug: blog1
+categories:
+- ''
+- ''
+---
+
+
+
+<p>Recall the TfL data on how many bikes were hired every single day. We can get the latest data by running the following</p>
+<pre class="r"><code>url &lt;- &quot;https://data.london.gov.uk/download/number-bicycle-hires/ac29363e-e0cb-47cc-a97a-e216d900a6b0/tfl-daily-cycle-hires.xlsx&quot;
+
+# Download TFL data to temporary file
+httr::GET(url, write_disk(bike.temp &lt;- tempfile(fileext = &quot;.xlsx&quot;)))</code></pre>
+<pre><code>## Response [https://airdrive-secure.s3-eu-west-1.amazonaws.com/london/dataset/number-bicycle-hires/2020-08-26T09%3A19%3A21/tfl-daily-cycle-hires.xlsx?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=AKIAJJDIMAIVZJDICKHA%2F20200916%2Feu-west-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20200916T220043Z&amp;X-Amz-Expires=300&amp;X-Amz-Signature=58c26feb9c1e90934f4bb75d6299c558ec12972a36ab0c806ca7d4892fb3de60&amp;X-Amz-SignedHeaders=host]
+##   Date: 2020-09-16 22:04
+##   Status: 200
+##   Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+##   Size: 164 kB
+## &lt;ON DISK&gt;  C:\Users\samgo\AppData\Local\Temp\Rtmpwvnbdg\file27087f767c80.xlsx</code></pre>
+<pre class="r"><code># Use read_excel to read it as dataframe
+bike0 &lt;- read_excel(bike.temp,
+                   sheet = &quot;Data&quot;,
+                   range = cell_cols(&quot;A:B&quot;))
+
+# change dates to get year, month, and week
+bike &lt;- bike0 %&gt;% 
+  clean_names() %&gt;% 
+  rename (bikes_hired = number_of_bicycle_hires) %&gt;% 
+  mutate (year = year(day),
+          month = lubridate::month(day, label = TRUE),
+          week = isoweek(day))
+
+ggplot(filter(bike,year==2015:2020), aes(x=bikes_hired))+ 
+  geom_density()+
+  facet_grid(cols= vars(month), rows=vars(year), scales=&quot;free_y&quot;)+
+  theme_minimal()+
+  labs(y=&quot;&quot;, x=&quot;Bike Rentals&quot;)+
+  theme(axis.text.y=element_blank())+
+  scale_x_continuous(labels=c(&quot;20K&quot;,&quot;40K&quot;,&quot;60K&quot;),breaks=seq(20000,60000,by=20000))</code></pre>
+<p><img src="/blogs/blog6_files/figure-html/get_tfl_data-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#calculate the bike rental per month
+bike_1&lt;-bike%&gt;%
+  filter(year&gt;=2015)%&gt;%
+  group_by(year,month)%&gt;%
+  summarise(year=year,month=month,bikes_month=mean(bikes_hired))%&gt;%
+  unique()
+
+# calculate the average bank rental
+bike_1m&lt;-bike_1%&gt;%
+  ungroup(year)%&gt;%
+  filter(year!=2020)%&gt;%
+  summarise(month=month,bikes_year=mean(bikes_month))%&gt;%
+  unique()
+
+bike_1f&lt;-left_join(x = bike_1, y = bike_1m, by = &quot;month&quot;, all.x = TRUE)
+
+  
+# make the plot  
+ggplot(bike_1f, aes(month, bikes_month)) +  facet_wrap(~year) +
+  geom_ribbon(aes(ymin = bikes_month, ymax = pmin(bikes_year, bikes_month), fill = &quot;red&quot;), alpha=0.4, group=1) +
+  geom_ribbon(aes(ymin = bikes_year, ymax = pmin(bikes_year, bikes_month), fill = &quot;green&quot;),alpha=0.4, group=1) +
+  geom_line(group=1) +
+  geom_line(aes(month, bikes_year),colour=&quot;blue&quot;, size=1, group=1) +
+  labs(title=&quot;Mothly changes in TfL bike rentals&quot;,
+       subtitle=&quot;Change from monthly average shown in blue \n and calculated between 2015-2019&quot;,
+       caption = &quot;Source: TfL, London Data Store&quot;,
+       x=&quot;&quot;, 
+       y=&quot;Bike rentals&quot;)+
+  scale_y_continuous(labels=c(&quot;20000&quot;,&quot;25000&quot;,&quot;30000&quot;,&quot;35000&quot;,&quot;40000&quot;),breaks = seq(20000,40000,by=5000))+
+  theme_minimal()+
+  theme(title= element_text(size = 15, colour = &#39;black&#39;))+
+  guides(fill=F)</code></pre>
+<p><img src="/blogs/blog6_files/figure-html/unnamed-chunk-1-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<p>The second one looks at percentage changes from the expected level of weekly rentals. The two grey shaded rectangles correspond to the second (weeks 14-26) and fourth (weeks 40-52) quarters.</p>
+<p><img src="C:/Users/samgo/Desktop/Applied Statistics/Website/my_website/images/tfl_weekly.png" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#calculate the bikes hired per week in 2015-2019
+bike_2&lt;-bike%&gt;%
+  filter(year&gt;=2015)%&gt;%
+  group_by(year,week)%&gt;%
+  summarise(year=year,week=week,bikes_week=mean(bikes_hired))%&gt;%
+  unique() %&gt;% 
+  ungroup
+
+#calculate the bikes hired 
+bike_2&lt;-bike_2 %&gt;% 
+  group_by(week) %&gt;% 
+  mutate(exp_bikes_week=mean(bikes_week),
+         bikes_week_percent=100*(bikes_week-exp_bikes_week)/exp_bikes_week)
+  
+
+
+ggplot(bike_2, aes(week, bikes_week_percent)) +  facet_wrap(~year) +
+  geom_ribbon(aes(ymin = bikes_week_percent, ymax = pmin(bikes_week_percent, 0), fill= &quot;red&quot;), alpha=0.4, group=1) +
+  geom_ribbon(aes(ymin = 0, ymax = pmin(bikes_week_percent, 0), fill = &quot;green&quot;),alpha=0.4, group=1) +
+  #geom_rug(data=.%&gt;% filter(bikes_week_percent&gt;0),
+  #         mapping=aes(x=week,y=bikes_week_percent),color=&quot;#a1d99b&quot;,sides=&quot;b&quot;)+
+  #geom_rug(data=.%&gt;% filter(bikes_week_percent&lt;0),
+   #        mapping=aes(x=week,y=bikes_week_percent),color=&quot;#a50f15&quot;,sides=&quot;b&quot;)+  
+  geom_line(group=1) +
+  geom_line(aes(week, bikes_week_percent),size=0.1,group=1) +
+  geom_rect(aes(xmin=13, xmax=26, ymin=-Inf, ymax=Inf),fill=&#39;light grey&#39;,alpha = .01)+
+  geom_rect(aes(xmin=39, xmax=53, ymin=-Inf, ymax=Inf),fill=&#39;light grey&#39;,alpha = .01)+
+  theme_minimal()+
+  labs(title=&quot;Weekly changes in TfL bike rentals&quot;,
+       subtitle=&quot;% change from monthly averages calculated between 2015-2019&quot;,
+       caption = &quot;Source: TfL, London Data Store&quot;,
+       x=&quot;week&quot;, 
+       y=&quot;&quot;)+
+  scale_y_continuous(labels=c(&quot;-60%&quot;,&quot;-30%&quot;,&quot;0&quot;,&quot;30%&quot;,&quot;60%&quot;))+
+  scale_x_continuous(labels=c(&quot;13&quot;,&quot;26&quot;,&quot;39&quot;,&quot;53&quot;),breaks = seq(13,53,by=13))+
+  theme(title= element_text(size = 15, colour = &#39;black&#39;))+
+  guides(fill=F)</code></pre>
+<p><img src="/blogs/blog6_files/figure-html/unnamed-chunk-2-1.png" width="1152" style="display: block; margin: auto;" /></p>
