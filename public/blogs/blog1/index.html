@@ -8,7 +8,7 @@
 	<meta name="description" content="Samy&#39;s Website">
 	<meta name="author" content="Samy Mohamad">
 	<meta name="generator" content="Hugo 0.74.3" />
-	<title>Trumps Approval List &middot; Samy Mohamad</title>
+	<title>Gender Discrimination &middot; Samy Mohamad</title>
 	<!-- Stylesheets -->
 	
 	<link rel="stylesheet" href="/css/main.css"/>
@@ -77,176 +77,132 @@
                     <section id="one">
                         <div class="inner">
                             <header class="major">
-                                <h1>Trumps Approval List</h1>
+                                <h1>Gender Discrimination</h1>
                             </header>
                             
                             
 
 
-<pre class="r"><code># Import approval polls data
-approval_polllist &lt;- read_csv(here::here(&#39;data&#39;, &#39;approval_polllist.csv&#39;))
+<pre class="r"><code>omega &lt;- read_csv(here::here(&quot;data&quot;, &quot;omega.csv&quot;))
+glimpse(omega) # examine the data frame</code></pre>
+<pre><code>## Rows: 50
+## Columns: 3
+## $ salary     &lt;dbl&gt; 81894, 69517, 68589, 74881, 65598, 76840, 78800, 70033, ...
+## $ gender     &lt;chr&gt; &quot;male&quot;, &quot;male&quot;, &quot;male&quot;, &quot;male&quot;, &quot;male&quot;, &quot;male&quot;, &quot;male&quot;, ...
+## $ experience &lt;dbl&gt; 16, 25, 15, 33, 16, 19, 32, 34, 1, 44, 7, 14, 33, 19, 24...</code></pre>
+<div id="relationship-salary---gender" class="section level2">
+<h2>Relationship Salary - Gender ?</h2>
+<p>The data frame <code>omega</code> contains the salaries for the sample of 50 executives in the company. Can you conclude that there is a significant difference between the salaries of the male and female executives?</p>
+<p>Note that you can perform different types of analyses, and check whether they all lead to the same conclusion</p>
+<p>. Confidence intervals
+. Hypothesis testing
+. Correlation analysis
+. Regression</p>
+<p>Calculate summary statistics on salary by gender. Also, create and print a dataframe where, for each gender, you show the mean, SD, sample size, the t-critical, the SE, the margin of error, and the low/high endpoints of a 95% condifence interval</p>
+<pre class="r"><code># Summary Statistics of salary by gender
+df_by_gender&lt;-mosaic::favstats (salary ~ gender, data=omega)
 
-glimpse(approval_polllist)</code></pre>
-<pre><code>## Rows: 14,533
-## Columns: 22
-## $ president           &lt;chr&gt; &quot;Donald Trump&quot;, &quot;Donald Trump&quot;, &quot;Donald Trump&quot;,...
-## $ subgroup            &lt;chr&gt; &quot;All polls&quot;, &quot;All polls&quot;, &quot;All polls&quot;, &quot;All pol...
-## $ modeldate           &lt;chr&gt; &quot;8/29/2020&quot;, &quot;8/29/2020&quot;, &quot;8/29/2020&quot;, &quot;8/29/20...
-## $ startdate           &lt;chr&gt; &quot;1/20/2017&quot;, &quot;1/20/2017&quot;, &quot;1/20/2017&quot;, &quot;1/21/20...
-## $ enddate             &lt;chr&gt; &quot;1/22/2017&quot;, &quot;1/22/2017&quot;, &quot;1/24/2017&quot;, &quot;1/23/20...
-## $ pollster            &lt;chr&gt; &quot;Gallup&quot;, &quot;Morning Consult&quot;, &quot;Ipsos&quot;, &quot;Gallup&quot;,...
-## $ grade               &lt;chr&gt; &quot;B&quot;, &quot;B/C&quot;, &quot;B-&quot;, &quot;B&quot;, &quot;B&quot;, &quot;C+&quot;, &quot;B-&quot;, &quot;B+&quot;, &quot;...
-## $ samplesize          &lt;dbl&gt; 1500, 1992, 1632, 1500, 1500, 1500, 1651, 1190,...
-## $ population          &lt;chr&gt; &quot;a&quot;, &quot;rv&quot;, &quot;a&quot;, &quot;a&quot;, &quot;a&quot;, &quot;lv&quot;, &quot;a&quot;, &quot;rv&quot;, &quot;a&quot;,...
-## $ weight              &lt;dbl&gt; 0.262, 0.680, 0.153, 0.243, 0.227, 0.200, 0.142...
-## $ influence           &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,...
-## $ approve             &lt;dbl&gt; 45.0, 46.0, 42.1, 45.0, 46.0, 57.0, 42.3, 36.0,...
-## $ disapprove          &lt;dbl&gt; 45.0, 37.0, 45.2, 46.0, 45.0, 43.0, 45.8, 44.0,...
-## $ adjusted_approve    &lt;dbl&gt; 45.8, 45.3, 43.2, 45.8, 46.8, 51.6, 43.4, 37.7,...
-## $ adjusted_disapprove &lt;dbl&gt; 43.6, 37.8, 43.9, 44.6, 43.6, 44.4, 44.5, 42.8,...
-## $ multiversions       &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,...
-## $ tracking            &lt;lgl&gt; TRUE, NA, TRUE, TRUE, TRUE, TRUE, TRUE, NA, NA,...
-## $ url                 &lt;chr&gt; &quot;http://www.gallup.com/poll/201617/gallup-daily...
-## $ poll_id             &lt;dbl&gt; 49253, 49249, 49426, 49262, 49236, 49266, 49425...
-## $ question_id         &lt;dbl&gt; 77265, 77261, 77599, 77274, 77248, 77278, 77598...
-## $ createddate         &lt;chr&gt; &quot;1/23/2017&quot;, &quot;1/23/2017&quot;, &quot;3/1/2017&quot;, &quot;1/24/201...
-## $ timestamp           &lt;chr&gt; &quot;13:38:37 29 Aug 2020&quot;, &quot;13:38:37 29 Aug 2020&quot;,...</code></pre>
-<pre class="r"><code># Use `lubridate` to fix dates, as they are given as characters.</code></pre>
-<div id="create-a-plot" class="section level2">
-<h2>Create a plot</h2>
-<p>I calculated the average net approval rate (approve- disapprove) for each week since he got into office. I plotted the net approval, along with its 95% confidence interval. As part of the assignment for the MAM.</p>
-<pre class="r"><code>temp1&lt;-approval_polllist%&gt;%
-  filter(enddate!=&quot;12/31/2017&quot;)%&gt;%
-  mutate(enddate=mdy(enddate), #mdy because month/day/year in lubridate
-         week_ty=isoweek(enddate),
-         year=year(enddate))%&gt;%
-  filter(subgroup==&quot;Voters&quot;)%&gt;%
-  group_by(year,week_ty)%&gt;%
-  mutate(netappper=approve-disapprove)%&gt;%
-  summarise(week_ty=isoweek(enddate),
-            year=as.character(year(enddate)),
-            netapp=mean(netappper),
-            sdnetapp=sd(netappper))%&gt;%
-  mutate(standard_error=sdnetapp/sqrt(n()),
-         tcrit=qt(0.975,n()-1)) %&gt;% 
-  mutate(lower_95=netapp-tcrit*standard_error, 
-         upper_95=netapp+tcrit*standard_error) %&gt;% 
-  unique()#note after previous operations, there will be numerous identical rows: the commands make them identical, but mutate/summarise do not delete them, that&#39;s why we need unique()
-  
-  
-ggplot(temp1,aes(x=week_ty,y=netapp,color=year))+
-  geom_line(show.legend = FALSE)+geom_point(show.legend=FALSE)+
-  geom_ribbon(aes(x=week_ty,ymin=lower_95,ymax=upper_95,fill=year),alpha=0.1,show.legend=FALSE)+
-  geom_hline(yintercept=0,color=&quot;orange&quot;)+
-  facet_wrap(~year)+
+# Dataframe with two rows (male-female) and having as columns gender, mean, SD, sample size, 
+# the t-critical value, the standard error, the margin of error, 
+# and the low/high endpoints of a 95% confidence interval
+
+df_by_gender2&lt;- df_by_gender %&gt;% 
+  mutate(t_critical=qt(.975,n-1), standard_error=sd/sqrt(n), upper_95=mean+t_critical*standard_error, lower_95=mean-t_critical*standard_error) %&gt;% select(gender,mean,sd,n,t_critical,standard_error,upper_95,lower_95)
+
+df_by_gender2</code></pre>
+<pre><code>##   gender  mean   sd  n t_critical standard_error upper_95 lower_95
+## 1 female 64543 7567 26       2.06           1484    67599    61486
+## 2   male 73239 7463 24       2.07           1523    76390    70088</code></pre>
+<pre class="r"><code># We can see that the confidence intervals for men and women in regards to salary do not overlap. This would allow us to reject the null hypothesis, but we will carry out hypothesis testing anyway and analyse the relationships between all the remaining factors.
+
+#We will draw a scatterplot to visually inspect relationship between salary and experience
+
+ggplot(df_by_gender,aes(x=gender,y=mean, colour= gender,fill=gender)) +
+  geom_col() +
+  labs(title = &quot;On Average Male Executives Make More at Omega&quot;, x=&quot;&quot;, y= &quot;Salary (in USD)&quot;) +
   theme_bw()+
-  scale_x_continuous(breaks=seq(0,52,by=13))+
-  scale_y_continuous(breaks=seq(-20.0,7.5,by=2.5))+
-  labs(title=&quot;Estimating Net Approval (approve-disapprove) for Donald Trump&quot;,
-       subtitle=&quot;Weekly average of all polls&quot;,
-       x=&quot;Week of the year&quot;,
-       y=&quot;Average Net Approval (%)&quot;)</code></pre>
-<p><img src="/blogs/blog4_files/figure-html/unnamed-chunk-2-1.png" width="1152" style="display: block; margin: auto;" /></p>
+  scale_y_continuous(labels= scales::dollar)+
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="/blogs/blog1_files/figure-html/confint_single_valiables-1.png" width="648" style="display: block; margin: auto;" /></p>
+<p>We can observe a strong relationship between salary and experience. Increase in salary comes quickly at the beginning and throughout the first ~15 years, however the gains in salary become slower later over time, displaying diminishing marginal returns.</p>
+<p>We will further investigate the difference between salaries by gender through hypothesis testing, utilizing both t.test() and the simulation method from the infer package.</p>
+<pre class="r"><code># hypothesis testing using t.test() 
+t.test(salary~gender, data=omega)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  salary by gender
+## t = -4, df = 48, p-value = 2e-04
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -12973  -4420
+## sample estimates:
+## mean in group female   mean in group male 
+##                64543                73239</code></pre>
+<pre class="r"><code># hypothesis testing using infer package
+set.seed(12345)
+salary_by_gender&lt;- omega %&gt;% 
+  specify(salary~gender) %&gt;% 
+  hypothesize(null=&quot;independence&quot;) %&gt;% 
+  generate(reps=1000,type=&quot;permute&quot;) %&gt;% 
+  calculate(stat=&quot;diff in means&quot;,
+            order=c(&quot;male&quot;,&quot;female&quot;))
+
+salary_by_gender %&gt;% visualize()+shade_p_value(obs_stat = df_by_gender2[2,2]-df_by_gender2[1,2], direction = &quot;both&quot;)</code></pre>
+<p><img src="/blogs/blog1_files/figure-html/hypothesis_testing-1.png" width="648" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>#now getting p value for conclusion
+
+p_value_by_gender&lt;-salary_by_gender %&gt;% 
+  get_p_value(obs_stat = df_by_gender2[2,2]-df_by_gender2[1,2], direction = &quot;both&quot;)
+p_value_by_gender</code></pre>
+<pre><code>## # A tibble: 1 x 1
+##   p_value
+##     &lt;dbl&gt;
+## 1       0</code></pre>
+<pre class="r"><code>#p_value is tiny, so the null hypothesis can be rejected</code></pre>
+<p>Looking at the graph the x axis ends at 10,000 dollars. The difference in the mean values of the gender salaries is 8,696 dollars. We can see that this results in a p-value close enough to zero, so we can conclude that at a 5% significance level there is a meaningful difference between the mean salaries of men and women.</p>
 </div>
+<div id="relationship-experience---gender" class="section level2">
+<h2>Relationship Experience - Gender?</h2>
+<p>At the board meeting, someone raised the issue that there was indeed a substantial difference between male and female salaries, but that this was attributable to other reasons such as differences in experience. A questionnaire send out to the 50 executives in the sample reveals that the average experience of the men is approximately 21 years, whereas the women only have about 7 years experience on average (see table below).</p>
+<pre class="r"><code># Summary Statistics of salary by gender
+stats_exp_gender &lt;- favstats (experience ~ gender, data=omega)
 
-                        </div>
-                    </section>
-            <!-- Disqus Inject -->
-                
-            </div>
-            
-        <!-- Footer -->
-            
-                <!-- Footer -->
-    <footer id="footer">
-        <div class="inner">
-            <ul class="icons">
-                
-                    <li><a href="https://www.facebook.com/interfdsa" class="icon alt fa-facebook" target="_blank"><span class="label">Facebook</span></a></li>
-                
-                    <li><a href="https://www.instagram.com/interfdsa" class="icon alt fa-instagram" target="_blank"><span class="label">Instagram</span></a></li>
-                
-                    <li><a href="https://www.github.com/interfdsa" class="icon alt fa-github" target="_blank"><span class="label">GitHub</span></a></li>
-                
-                    <li><a href="https://www.linkedin.com/in/samy-mohamad-985a263b/" class="icon alt fa-linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
-                
-            </ul>
-            <ul class="copyright">
-                <li>&copy; Company Name</li>
-                
-            </ul>
-        </div>
-    </footer>
+# Calculate 95% confidence intervals for experience by gender
+exp_gender_ci &lt;- omega %&gt;% 
+  group_by(gender) %&gt;%
+  summarise(mean_exp = mean(experience),
+            sd_exp = sd(experience),
+            count = n(),
+            t_critical = qt(0.975, count -1),
+            se_exp = sd_exp/sqrt(count),
+            margin_of_error_exp = t_critical * se_exp,
+            exp_low = mean_exp - margin_of_error_exp,
+            exp_high = mean_exp + margin_of_error_exp)
 
-            
-        </div>
+exp_gender_ci</code></pre>
+<pre><code>## # A tibble: 2 x 9
+##   gender mean_exp sd_exp count t_critical se_exp margin_of_error~ exp_low
+##   &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt;      &lt;dbl&gt;  &lt;dbl&gt;            &lt;dbl&gt;   &lt;dbl&gt;
+## 1 female     7.38   8.51    26       2.06   1.67             3.44    3.95
+## 2 male      21.1   10.9     24       2.07   2.23             4.61   16.5 
+## # ... with 1 more variable: exp_high &lt;dbl&gt;</code></pre>
+<pre class="r"><code># We can see that the confidence intervals for men and women in regards to experience do not overlap. This would allow us to reject the null hypothesis, but we will carry out hypothesis testing anyway.
 
-    <!-- Scripts -->
-        <!-- Scripts -->
-    <!-- jQuery -->
-    <script src="/js/jquery.min.js"></script>
-    <script src="/js/jquery.scrolly.min.js"></script>
-    <script src="/js/jquery.scrollex.min.js"></script>
-    <script src="/js/skel.min.js"></script>
-    <script src="/js/util.js"></script>
-
-    
-
-    <!-- Main JS -->
-    <script src="/js/main.js"></script>
-
-    
-
-    
-
-    </body>
-</html>
-         
-                <!-- Footer -->
-    <footer id="footer">
-        <div class="inner">
-            <ul class="icons">
-                
-                    <li><a href="https://www.facebook.com/interfdsa" class="icon alt fa-facebook" target="_blank"><span class="label">Facebook</span></a></li>
-                
-                    <li><a href="https://www.instagram.com/interfdsa" class="icon alt fa-instagram" target="_blank"><span class="label">Instagram</span></a></li>
-                
-                    <li><a href="https://www.github.com/interfdsa" class="icon alt fa-github" target="_blank"><span class="label">GitHub</span></a></li>
-                
-                    <li><a href="https://www.linkedin.com/in/samy-mohamad-985a263b/" class="icon alt fa-linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
-                
-            </ul>
-            <ul class="copyright">
-                <li>&copy; Company Name</li>
-                
-            </ul>
-        </div>
-    </footer>
-
-            
-        </div>
-
-    <!-- Scripts -->
-        <!-- Scripts -->
-    <!-- jQuery -->
-    <script src="/js/jquery.min.js"></script>
-    <script src="/js/jquery.scrolly.min.js"></script>
-    <script src="/js/jquery.scrollex.min.js"></script>
-    <script src="/js/skel.min.js"></script>
-    <script src="/js/util.js"></script>
-
-    
-
-    <!-- Main JS -->
-    <script src="/js/main.js"></script>
-
-    
-
-    
-
-    </body>
-</html>
-perience by gender. We get a tiny p-value reported at 1e-05, so almost zero
+#t-test
+t.test(experience~gender, data=omega, var.equal = FALSE)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  experience by gender
+## t = -5, df = 43, p-value = 1e-05
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -19.35  -8.13
+## sample estimates:
+## mean in group female   mean in group male 
+##                 7.38                21.12</code></pre>
+<pre class="r"><code>#the t-test shows that we can accept the alternative hypothesis, there is a significant difference in means of experience by gender. We get a tiny p-value reported at 1e-05, so almost zero
 
 # permutation test
 set.seed(1234)
