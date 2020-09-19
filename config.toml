@@ -159,7 +159,7 @@ disqusShortname = ""
   # Footer section
   [params.footer]
     enable = true
-    copyright = "Company Name"
+    copyright = "Samy Mohamad"
 
     [[params.footer.social]]
       icon = "fa-facebook"
