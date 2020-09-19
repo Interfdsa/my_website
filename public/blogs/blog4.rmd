@@ -3,7 +3,6 @@ title: "Trumps Approval List"
 date: '2020-09-15'
 description: How has Trumps Approval changed over the years?
 draft: no
-image: pic02.jpg
 keywords: ''
 slug: blog1
 categories:
@@ -17,7 +16,7 @@ knitr::opts_chunk$set(
   warning = FALSE, 
   tidy=FALSE,     # display code as typed
   size="small")   # slightly smaller font for code
-options(digits = 3)
+options(digits = 3) 
 
 # default figure size
 knitr::opts_chunk$set(

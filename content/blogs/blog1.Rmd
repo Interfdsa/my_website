@@ -3,7 +3,6 @@ title: "Gender Discrimination"
 date: '2020-09-15'
 description: Is Gender Discrimination Present in Omega?
 draft: no
-image: pic02.jpg
 keywords: ''
 slug: blog1
 categories:
