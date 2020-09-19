@@ -1,5 +1,5 @@
 # Site settings
-baseURL = "samymo.netlify.app""
+baseURL = "https://www.samymo.netlify.app"
 languageCode = "en-us"
 title = "Samy Mohamad"
 theme = "forty"
