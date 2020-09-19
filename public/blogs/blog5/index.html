@@ -80,8 +80,6 @@
                                 <h1>Mask Acceptance</h1>
                             </header>
                             
-                                <span class="image main"><img src="/img/blogs/pic07.jpg" alt="" /></span>
-                            
                             
 
 
@@ -125,44 +123,44 @@ glimpse(nyt_mask_survey)</code></pre>
 # The id field is the FIPS code for the county
 county_map %&gt;% 
   sample_n(5)</code></pre>
-<pre><code>##       long      lat  order  hole piece            group    id
-## 1   728556  -101011 190218 FALSE     1 0500000US55123.1 55123
-## 2 -1835390 -1001844  28117 FALSE     3 0500000US06083.3 06083
-## 3  1028346  -769615  64310 FALSE     1 0500000US21055.1 21055
-## 4  1397269 -1178773  41048 FALSE     1 0500000US13077.1 13077
-## 5  -663522 -2198871  13757 FALSE     1 0500000US02198.1 02198</code></pre>
+<pre><code>##       long     lat  order  hole piece            group    id
+## 1  2008713 -340721  81042 FALSE     1 0500000US24025.1 24025
+## 2 -1530110  585614 177059 FALSE     1 0500000US53007.1 53007
+## 3  1533346 -335318 130381 FALSE     1 0500000US39031.1 39031
+## 4   913802 -766189 100759 FALSE     1 0500000US29031.1 29031
+## 5  -314978   59324 105506 FALSE     1 0500000US30011.1 30011</code></pre>
 <pre class="r"><code>county_data %&gt;%
     sample_n(5)</code></pre>
-<pre><code>##      id                name state census_region      pop_dens   pop_dens4
-## 1 06013 Contra Costa County    CA          West [ 1000, 5000) [118,71672]
-## 2 38083     Sheridan County    ND       Midwest [    0,   10) [  0,   17)
-## 3 24027       Howard County    MD         South [ 1000, 5000) [118,71672]
-## 4 48327       Menard County    TX         South [    0,   10) [  0,   17)
-## 5 28099      Neshoba County    MS         South [   50,  100) [ 45,  118)
-##     pop_dens6   pct_black     pop female white black travel_time land_area
-## 1 [215,71672] [ 5.0,10.0) 1111339   51.2  67.9   9.6        33.3       716
-## 2 [  0,    9) [ 0.0, 2.0)    1326   49.6  96.7   0.3        21.1       972
-## 3 [215,71672] [15.0,25.0)  309284   50.9  61.4  18.4        30.6       251
-## 4 [  0,    9) [ 0.0, 2.0)    2147   49.9  96.2   1.4        20.6       902
-## 5 [ 45,   82) [15.0,25.0)   29465   52.3  60.3  21.2        24.4       570
+<pre><code>##      id              name state census_region      pop_dens   pop_dens4
+## 1 28045    Hancock County    MS         South [   50,  100) [ 45,  118)
+## 2 47019     Carter County    TN         South [  100,  500) [118,71672]
+## 3 17049  Effingham County    IL       Midwest [   50,  100) [ 45,  118)
+## 4 51079     Greene County    VA         South [  100,  500) [118,71672]
+## 5 32033 White Pine County    NV          West [    0,   10) [  0,   17)
+##     pop_dens6   pct_black   pop female white black travel_time land_area
+## 1 [ 82,  215) [ 5.0,10.0) 45949   50.5  88.2   8.1        29.1       474
+## 2 [ 82,  215) [ 0.0, 2.0) 56886   51.1  96.8   1.5        22.8       341
+## 3 [ 45,   82) [ 0.0, 2.0) 34320   50.2  98.1   0.4        17.8       479
+## 4 [ 82,  215) [ 5.0,10.0) 19031   50.6  89.1   6.8        29.3       156
+## 5 [  0,    9) [ 2.0, 5.0) 10034   42.7  87.2   4.5        21.4      8876
 ##   hh_income su_gun4 su_gun6  fips votes_dem_2016 votes_gop_2016
-## 1     78756 [ 0, 5) [ 4, 7)  6013         286658         105819
-## 2     43250 [ 0, 5) [ 0, 4) 38083             94            644
-## 3    109865 [ 0, 5) [ 0, 4) 24027          93808          44792
-## 4     31215 [ 0, 5) [ 0, 4) 48327            153            681
-## 5     37050 [ 8,11) [10,12) 28099           2668           7613
+## 1     44522 [11,54] [10,12) 28045           3320          13720
+## 2     31842 [ 8,11) [ 8,10) 47019           3453          16897
+## 3     52108 [ 0, 5) [ 0, 4) 17049           3071          13613
+## 4     59358 [ 8,11) [ 8,10) 51079           2923           5943
+## 5     48586 [11,54] [12,54] 32033            707           2723
 ##   total_votes_2016 per_dem_2016 per_gop_2016 diff_2016 per_dem_2012
-## 1           415972        0.689        0.254    180839        0.657
-## 2              774        0.121        0.832       550        0.199
-## 3           146401        0.641        0.306     49016        0.595
-## 4              860        0.178        0.792       528        0.201
-## 5            10438        0.256        0.729      4945        0.278
-##   per_gop_2012 diff_2012  winner partywinner16 winner12 partywinner12 flipped
-## 1        0.320    118279 Clinton      Democrat    Obama      Democrat      No
-## 2        0.788       476   Trump    Republican   Romney    Republican      No
-## 3        0.383     29923 Clinton      Democrat    Obama      Democrat      No
-## 4        0.784       493   Trump    Republican   Romney    Republican      No
-## 5        0.714      4742   Trump    Republican   Romney    Republican      No</code></pre>
+## 1            17517        0.190        0.783     10400        0.228
+## 2            20993        0.164        0.805     13444        0.232
+## 3            17428        0.176        0.781     10542        0.232
+## 4             9503        0.308        0.625      3020        0.365
+## 5             3773        0.187        0.722      2016        0.265
+##   per_gop_2012 diff_2012 winner partywinner16 winner12 partywinner12 flipped
+## 1        0.755      8980  Trump    Republican   Romney    Republican      No
+## 2        0.752     10710  Trump    Republican   Romney    Republican      No
+## 3        0.753      8636  Trump    Republican   Romney    Republican      No
+## 4        0.618      2274  Trump    Republican   Romney    Republican      No
+## 5        0.702      1618  Trump    Republican   Romney    Republican      No</code></pre>
 <pre class="r"><code>glimpse(county_data)</code></pre>
 <pre><code>## Rows: 3,195
 ## Columns: 32

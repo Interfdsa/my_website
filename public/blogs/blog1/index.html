@@ -201,33 +201,52 @@ ggplot(temp1,aes(x=week_ty,y=netapp,color=year))+
 
     </body>
 </html>
- margin_of_error_exp = t_critical * se_exp,
-            exp_low = mean_exp - margin_of_error_exp,
-            exp_high = mean_exp + margin_of_error_exp)
+         
+                <!-- Footer -->
+    <footer id="footer">
+        <div class="inner">
+            <ul class="icons">
+                
+                    <li><a href="https://www.facebook.com/interfdsa" class="icon alt fa-facebook" target="_blank"><span class="label">Facebook</span></a></li>
+                
+                    <li><a href="https://www.instagram.com/interfdsa" class="icon alt fa-instagram" target="_blank"><span class="label">Instagram</span></a></li>
+                
+                    <li><a href="https://www.github.com/interfdsa" class="icon alt fa-github" target="_blank"><span class="label">GitHub</span></a></li>
+                
+                    <li><a href="https://www.linkedin.com/in/samy-mohamad-985a263b/" class="icon alt fa-linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
+                
+            </ul>
+            <ul class="copyright">
+                <li>&copy; Company Name</li>
+                
+            </ul>
+        </div>
+    </footer>
 
-exp_gender_ci</code></pre>
-<pre><code>## # A tibble: 2 x 9
-##   gender mean_exp sd_exp count t_critical se_exp margin_of_error~ exp_low
-##   &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt;      &lt;dbl&gt;  &lt;dbl&gt;            &lt;dbl&gt;   &lt;dbl&gt;
-## 1 female     7.38   8.51    26       2.06   1.67             3.44    3.95
-## 2 male      21.1   10.9     24       2.07   2.23             4.61   16.5 
-## # ... with 1 more variable: exp_high &lt;dbl&gt;</code></pre>
-<pre class="r"><code># We can see that the confidence intervals for men and women in regards to experience do not overlap. This would allow us to reject the null hypothesis, but we will carry out hypothesis testing anyway.
+            
+        </div>
 
-#t-test
-t.test(experience~gender, data=omega, var.equal = FALSE)</code></pre>
-<pre><code>## 
-##  Welch Two Sample t-test
-## 
-## data:  experience by gender
-## t = -5, df = 43, p-value = 1e-05
-## alternative hypothesis: true difference in means is not equal to 0
-## 95 percent confidence interval:
-##  -19.35  -8.13
-## sample estimates:
-## mean in group female   mean in group male 
-##                 7.38                21.12</code></pre>
-<pre class="r"><code>#the t-test shows that we can accept the alternative hypothesis, there is a significant difference in means of experience by gender. We get a tiny p-value reported at 1e-05, so almost zero
+    <!-- Scripts -->
+        <!-- Scripts -->
+    <!-- jQuery -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery.scrolly.min.js"></script>
+    <script src="/js/jquery.scrollex.min.js"></script>
+    <script src="/js/skel.min.js"></script>
+    <script src="/js/util.js"></script>
+
+    
+
+    <!-- Main JS -->
+    <script src="/js/main.js"></script>
+
+    
+
+    
+
+    </body>
+</html>
+perience by gender. We get a tiny p-value reported at 1e-05, so almost zero
 
 # permutation test
 set.seed(1234)
