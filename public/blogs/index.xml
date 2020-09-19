@@ -1,72 +1,0 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Lifestyle on Samy Mohamad</title>
-    <link>/blogs/</link>
-    <description>Recent content in Lifestyle on Samy Mohamad</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Tue, 31 Oct 2017 22:27:21 -0500</lastBuildDate>
-    
-	<atom:link href="/blogs/index.xml" rel="self" type="application/rss+xml" />
-    
-    
-    <item>
-      <title>Munich Airbnb</title>
-      <link>/blogs/blog2/</link>
-      <pubDate>Sat, 19 Sep 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/blogs/blog2/</guid>
-      <description>Airbnb is a prime example of a disruptive innovation, that is now one of the largest marketplaces for accomodation with over 7 million properties in more than 220 countries. With this project we sought to utilize scraped data from Airbnb listings to carry out statistical analyses and ultimately predict the total cost for two people staying four nights in the city of Munich, Germany.</description>
-    </item>
-    
-    <item>
-      <title>COVID-19 data analysis</title>
-      <link>/blogs/blog3/</link>
-      <pubDate>Tue, 15 Sep 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/blogs/blog3/</guid>
-      <description>Let us revisit the CDC Covid-19 Case Surveillance Data. There are well over 3 million entries of individual, de-identified patient data. Since this is a large file, I suggest you use vroom to load it and you keep cache=TRUE in the chunk options.
-# URL link to CDC to download dataurl &amp;lt;- &amp;quot;https://data.cdc.gov/api/views/vbim-akqf/rows.csv?accessType=DOWNLOAD&amp;quot;covid_data &amp;lt;- vroom(url)%&amp;gt;%clean_names()Given the data we have, I would like you to produce two graphs that show death % rate:(Do we need to perform data cleansing on missing values?</description>
-    </item>
-    
-    <item>
-      <title>Gender Discrimination</title>
-      <link>/blogs/blog1/</link>
-      <pubDate>Tue, 15 Sep 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/blogs/blog1/</guid>
-      <description>omega &amp;lt;- read_csv(here::here(&amp;quot;data&amp;quot;, &amp;quot;omega.csv&amp;quot;))glimpse(omega) # examine the data frame## Rows: 50## Columns: 3## $ salary &amp;lt;dbl&amp;gt; 81894, 69517, 68589, 74881, 65598, 76840, 78800, 70033, ...## $ gender &amp;lt;chr&amp;gt; &amp;quot;male&amp;quot;, &amp;quot;male&amp;quot;, &amp;quot;male&amp;quot;, &amp;quot;male&amp;quot;, &amp;quot;male&amp;quot;, &amp;quot;male&amp;quot;, &amp;quot;male&amp;quot;, ...## $ experience &amp;lt;dbl&amp;gt; 16, 25, 15, 33, 16, 19, 32, 34, 1, 44, 7, 14, 33, 19, 24...Relationship Salary - Gender ?The data frame omega contains the salaries for the sample of 50 executives in the company.</description>
-    </item>
-    
-    <item>
-      <title>TFL Bikes</title>
-      <link>/blogs/blog1/</link>
-      <pubDate>Tue, 15 Sep 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/blogs/blog1/</guid>
-      <description>Recall the TfL data on how many bikes were hired every single day. We can get the latest data by running the following
-url &amp;lt;- &amp;quot;https://data.london.gov.uk/download/number-bicycle-hires/ac29363e-e0cb-47cc-a97a-e216d900a6b0/tfl-daily-cycle-hires.xlsx&amp;quot;# Download TFL data to temporary filehttr::GET(url, write_disk(bike.temp &amp;lt;- tempfile(fileext = &amp;quot;.xlsx&amp;quot;)))## Response [https://airdrive-secure.s3-eu-west-1.amazonaws.com/london/dataset/number-bicycle-hires/2020-08-26T09%3A19%3A21/tfl-daily-cycle-hires.xlsx?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;amp;X-Amz-Credential=AKIAJJDIMAIVZJDICKHA%2F20200916%2Feu-west-1%2Fs3%2Faws4_request&amp;amp;X-Amz-Date=20200916T220043Z&amp;amp;X-Amz-Expires=300&amp;amp;X-Amz-Signature=58c26feb9c1e90934f4bb75d6299c558ec12972a36ab0c806ca7d4892fb3de60&amp;amp;X-Amz-SignedHeaders=host]## Date: 2020-09-16 22:04## Status: 200## Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet## Size: 164 kB## &amp;lt;ON DISK&amp;gt; C:\Users\samgo\AppData\Local\Temp\Rtmpwvnbdg\file27087f767c80.xlsx# Use read_excel to read it as dataframebike0 &amp;lt;- read_excel(bike.</description>
-    </item>
-    
-    <item>
-      <title>Trumps Approval List</title>
-      <link>/blogs/blog4/</link>
-      <pubDate>Tue, 15 Sep 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/blogs/blog4/</guid>
-      <description># Import approval polls dataapproval_polllist &amp;lt;- read_csv(here::here(&amp;#39;data&amp;#39;, &amp;#39;approval_polllist.csv&amp;#39;))glimpse(approval_polllist)## Rows: 14,533## Columns: 22## $ president &amp;lt;chr&amp;gt; &amp;quot;Donald Trump&amp;quot;, &amp;quot;Donald Trump&amp;quot;, &amp;quot;Donald Trump&amp;quot;,...## $ subgroup &amp;lt;chr&amp;gt; &amp;quot;All polls&amp;quot;, &amp;quot;All polls&amp;quot;, &amp;quot;All polls&amp;quot;, &amp;quot;All pol...## $ modeldate &amp;lt;chr&amp;gt; &amp;quot;8/29/2020&amp;quot;, &amp;quot;8/29/2020&amp;quot;, &amp;quot;8/29/2020&amp;quot;, &amp;quot;8/29/20...## $ startdate &amp;lt;chr&amp;gt; &amp;quot;1/20/2017&amp;quot;, &amp;quot;1/20/2017&amp;quot;, &amp;quot;1/20/2017&amp;quot;, &amp;quot;1/21/20...## $ enddate &amp;lt;chr&amp;gt; &amp;quot;1/22/2017&amp;quot;, &amp;quot;1/22/2017&amp;quot;, &amp;quot;1/24/2017&amp;quot;, &amp;quot;1/23/20...## $ pollster &amp;lt;chr&amp;gt; &amp;quot;Gallup&amp;quot;, &amp;quot;Morning Consult&amp;quot;, &amp;quot;Ipsos&amp;quot;, &amp;quot;Gallup&amp;quot;,.</description>
-    </item>
-    
-    <item>
-      <title>Mask Acceptance</title>
-      <link>/blogs/blog5/</link>
-      <pubDate>Mon, 07 Sep 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/blogs/blog5/</guid>
-      <description>NYT mask useGithub source for data https://github.com/nytimes/covid-19-data/tree/master/mask-use
-Getting the data#Source for data url &amp;lt;- &amp;quot;https://github.com/nytimes/covid-19-data/raw/master/mask-use/mask-use-by-county.csv&amp;quot;nyt_mask_survey &amp;lt;- read_csv(here::here(&amp;quot;data&amp;quot;, &amp;quot;nyt_mask_survey.csv&amp;quot;))nyt_mask_survey &amp;lt;- nyt_mask_survey %&amp;gt;%clean_names() %&amp;gt;% mutate(mostly_yes= frequently+always,mostly_no = never+rarely,delta = mostly_yes-mostly_no)glimpse(nyt_mask_survey)## Rows: 3,142## Columns: 9## $ countyfp &amp;lt;chr&amp;gt; &amp;quot;01001&amp;quot;, &amp;quot;01003&amp;quot;, &amp;quot;01005&amp;quot;, &amp;quot;01007&amp;quot;, &amp;quot;01009&amp;quot;, &amp;quot;01011&amp;quot;, &amp;quot;0...## $ never &amp;lt;dbl&amp;gt; 0.053, 0.083, 0.067, 0.020, 0.053, 0.031, 0.102, 0.152, ...## $ rarely &amp;lt;dbl&amp;gt; 0.</description>
-    </item>
-    
-  </channel>
-</rss>
